@@ -1,11 +1,11 @@
 # Use an official Go image to build the binary
-FROM golang:1.20 as builder
+FROM golang:1.25.1 as builder
 
 # Set the Current Working Directory inside the container
 WORKDIR /app
 
 # Copy go mod and sum files
-COPY go.mod go.sum ./
+COPY go.mod ./
 
 # Download all dependencies. Dependencies are cached if the go.mod and go.sum files are not changed
 RUN go mod download
