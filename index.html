@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Twitch Live Check (No Dependencies)</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background-color: white;
+      margin: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Cade a live do kasama?</h1>
+
+    {{ if .IsLive }}
+    <span>A live tá live pow, olha lá no <a href="https://twitch.tv/itsKasama">twitch</a></span>
+    {{ else }}
+    <span>{{ .Place }}</span>
+    {{ end }}
+  </div>
+
+</body>
+
+</html>
