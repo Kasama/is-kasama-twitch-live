@@ -47,6 +47,14 @@ func main() {
 		os.Exit(1)
 	}
 
+	httpClient := &http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{
+				InsecureSkipVerify: true,
+			},
+		},
+	}
+
 	auth := &TwitchAuth{
 		ExpiresAt: time.Now(),
 	}
@@ -56,7 +64,7 @@ func main() {
 			fmt.Println("using cached token")
 			return auth.Token, nil
 		}
-		resp, err := http.Post("https://id.twitch.tv/oauth2/token?client_id="+clientID+"&client_secret="+clientSecret+"&grant_type=client_credentials", "application/json", nil)
+		resp, err := httpClient.Post("https://id.twitch.tv/oauth2/token?client_id="+clientID+"&client_secret="+clientSecret+"&grant_type=client_credentials", "application/json", nil)
 		if err != nil {
 			return "", fmt.Errorf("failed to authenticate with twitch token: %v\n", err)
 		}
@@ -98,14 +106,7 @@ func main() {
 		req.Header.Add("Authorization", "Bearer "+token)
 		req.Header.Add("Client-Id", clientID)
 
-		client := &http.Client {
-			Transport: &http.Transport{
-				TLSClientConfig: &tls.Config{
-					InsecureSkipVerify: true,
-				},
-			},
-		}
-		resp, err := client.Do(req)
+		resp, err := httpClient.Do(req)
 		if err != nil {
 			fmt.Println("error making twitch request:", err)
 			w.WriteHeader(http.StatusUnauthorized)
