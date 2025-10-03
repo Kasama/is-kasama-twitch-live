@@ -24,6 +24,7 @@ WORKDIR /
 
 # Copy the Pre-built binary file from the builder stage
 COPY --from=builder /app/main .
+COPY --from=builder /app/index.html .
 
 # Command to run the executable
 CMD ["/main"]

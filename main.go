@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"text/template"
@@ -69,8 +70,8 @@ func main() {
 			return "", fmt.Errorf("failed to authenticate with twitch token: %v\n", err)
 		}
 
-		respBody := make([]byte, resp.ContentLength)
-		_, err = resp.Body.Read(respBody)
+		defer resp.Body.Close()
+		respBody, err := io.ReadAll(resp.Body)
 		if err != nil {
 			return "", fmt.Errorf("failed to read response body: %v\n", err)
 		}
@@ -114,8 +115,8 @@ func main() {
 			return
 		}
 
-		respBody := make([]byte, resp.ContentLength)
-		resp.Body.Read(respBody)
+		defer resp.Body.Close()
+		respBody, err := io.ReadAll(resp.Body)
 
 		streams := &TwitchStreamsResponse{}
 		json.Unmarshal(respBody, streams)
@@ -144,9 +145,9 @@ func main() {
 			"a live tá escondida na gaveta de bagunça que tem mais bagunça do que gaveta",
 			"a live tá escondida shhh 🤫",
 			"a live tá flutuando na garrafa de água na geladeira do seu vizinho",
-			"pergunta pro omegamain",
+			"pergunta pro omegamain, ele deve saber",
 			"a live tá presa na coleira do seu cachorro",
-			"a live tá dentro da lata de leite ninho",
+			"a live tá dentro de uma lata de leite ninho",
 			"a live tá entre as almofadas do sofá do seu tio-avô",
 			"ele não pode agora, ele tá sentado na beira do universo, esperando um ônibus",
 			"a live tá atrás da moldura daquela foto de família",
