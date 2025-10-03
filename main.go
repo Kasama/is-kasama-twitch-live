@@ -25,7 +25,6 @@ type TwitchStreamsResponse struct {
 }
 
 func main() {
-
 	clientID, clientIDExists := os.LookupEnv("TWITCH_CLIENT_ID")
 	if !clientIDExists {
 		fmt.Println("Missing TWITCH_CLIENT_ID environment variable")
@@ -83,22 +82,28 @@ func main() {
 	server.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		token, err := getToken()
 		if err != nil {
+			fmt.Println("error getting token:", err)
 			w.WriteHeader(http.StatusUnauthorized)
 			w.Write([]byte(err.Error()))
+			return
 		}
 
 		req, err := http.NewRequest("GET", "https://api.twitch.tv/helix/streams?user_login="+twitchChannel, nil)
 		if err != nil {
+			fmt.Println("error creating request:", err)
 			w.WriteHeader(http.StatusUnauthorized)
 			w.Write([]byte(err.Error()))
+			return
 		}
 		req.Header.Add("Authorization", "Bearer "+token)
 		req.Header.Add("Client-Id", clientID)
 
 		resp, err := http.DefaultClient.Do(req)
 		if err != nil {
+			fmt.Println("error making twitch request:", err)
 			w.WriteHeader(http.StatusUnauthorized)
 			w.Write([]byte(err.Error()))
+			return
 		}
 
 		respBody := make([]byte, resp.ContentLength)
@@ -114,6 +119,7 @@ func main() {
 
 		tmpl, err := template.ParseFiles("index.html")
 		if err != nil {
+			fmt.Println("error loading template:", err)
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte("Error loading template: " + err.Error()))
 			return
