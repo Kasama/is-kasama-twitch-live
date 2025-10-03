@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -87,7 +88,6 @@ func main() {
 			w.Write([]byte(err.Error()))
 			return
 		}
-
 		req, err := http.NewRequest("GET", "https://api.twitch.tv/helix/streams?user_login="+twitchChannel, nil)
 		if err != nil {
 			fmt.Println("error creating request:", err)
@@ -98,7 +98,14 @@ func main() {
 		req.Header.Add("Authorization", "Bearer "+token)
 		req.Header.Add("Client-Id", clientID)
 
-		resp, err := http.DefaultClient.Do(req)
+		client := &http.Client {
+			Transport: &http.Transport{
+				TLSClientConfig: &tls.Config{
+					InsecureSkipVerify: true,
+				},
+			},
+		}
+		resp, err := client.Do(req)
 		if err != nil {
 			fmt.Println("error making twitch request:", err)
 			w.WriteHeader(http.StatusUnauthorized)
