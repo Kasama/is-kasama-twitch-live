@@ -160,7 +160,7 @@ func main() {
 			"essa 'live' está na sala com você agora?",
 			"você chega no hospital, pergunta na recepção, fala com o médico, mas infelizmente a live foi perdida",
 			"a live é apenas um conceito",
-			"a live é um conjunto de feiches de luz passeando por cabos de fibra ótica. Algum dia ela chega até você",
+			"a live é um conjunto de feixes de luz passeando por cabos de fibra ótica. Algum dia ela chega até você",
 			`A live tá live pow, olha lá no <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">twitch</a>`,
 			"kasama não pode agora, ele tá sentado na beira do universo, esperando um ônibus",
 			"a live tá atrás da moldura daquela foto de família",
