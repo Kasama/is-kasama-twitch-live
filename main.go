@@ -165,6 +165,7 @@ func main() {
 			"kasama não pode agora, ele tá sentado na beira do universo, esperando um ônibus",
 			"a live tá atrás da moldura daquela foto de família",
 			`<a href="https://www.youtube.com/watch?v=--9kqhzQ-8Q">H.Y.C.Y.BH?</a>`,
+			"o Kasama passou mal tomando leite do fog",
 		}
 
 		// pick one place at random
