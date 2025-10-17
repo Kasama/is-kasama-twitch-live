@@ -26,9 +26,25 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Get Latest Tag
+        id: get_latest_tag
+        run: |
+          latest_tag=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            https://ghcr.io/v2/kasama/is-kasama-twitch-live/tags/list | jq -r '.tags | map(select(test("^[0-9]+$"))) | sort_by(tonumber) | last')
+          if [ -z "$latest_tag" ]; then
+            latest_tag=0
+          fi
+          echo "latest_tag=$latest_tag" >> $GITHUB_ENV
+
+      - name: Increment Tag
+        id: increment_tag
+        run: |
+          next_tag=$((latest_tag + 1))
+          echo "next_tag=$next_tag" >> $GITHUB_ENV
+
       - name: Build and Push Docker images
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64 \
-            --tag ghcr.io/kasama/is-kasama-twitch-live:latest \
+            --tag ghcr.io/kasama/is-kasama-twitch-live:${{ env.next_tag }} \
             --push .
