@@ -31,7 +31,7 @@ jobs:
         run: |
           response=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             https://ghcr.io/v2/kasama/is-kasama-twitch-live/tags/list)
-          latest_tag=$(echo "$response" | jq -r '.tags | map(select(test("^[0-9]+$"))) | sort_by(tonumber) | last // 0')
+          latest_tag=$(echo "$response" | jq -r '.tags | map(select(type == "string" and test("^[0-9]+$"))) | sort_by(tonumber) | last' || echo "0")
           echo "latest_tag=$latest_tag" >> $GITHUB_ENV
 
       - name: Increment Tag
