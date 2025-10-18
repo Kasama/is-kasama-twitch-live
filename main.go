@@ -166,6 +166,7 @@ func main() {
 			"a live tá atrás da moldura daquela foto de família",
 			`<a href="https://www.youtube.com/watch?v=--9kqhzQ-8Q">H.Y.C.Y.BH?</a>`,
 			"o Kasama passou mal tomando leite do fog",
+			"a live não está, ela é",
 		}
 
 		// pick one place at random
