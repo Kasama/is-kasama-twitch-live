@@ -1,6 +1,9 @@
 # Use an official Go image to build the binary
 FROM --platform=$BUILDPLATFORM golang:1.25.1 as builder
 
+ARG TARGETOS
+ARG TARGETARCH
+
 # Set the Current Working Directory inside the container
 WORKDIR /app
 
@@ -14,7 +17,7 @@ RUN go mod download
 COPY . .
 
 # Build the Go app as a statically linked binary
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
+RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -a -installsuffix cgo -o main .
 
 # Use a minimal image based on scratch for the final image
 FROM --platform=$TARGETPLATFORM scratch
